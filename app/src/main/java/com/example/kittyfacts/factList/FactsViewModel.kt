@@ -27,6 +27,12 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
     private val _items = MutableLiveData<List<FactItemModel>>().apply { value = emptyList() }
     val items: LiveData<List<FactItemModel>> = _items
 
+    private val _openDetailsEvent = MutableLiveData<Event<FactItemModel>>()
+    val openDetailsEvent: LiveData<Event<FactItemModel>> = _openDetailsEvent
+
+    init {
+        loadFacts()
+    }
     fun loadFacts() {
         _dataLoading.value = true
         viewModelScope.launch {
@@ -48,7 +54,7 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
     }
 
     fun openDetails(factItemModel: FactItemModel){
-
+        _openDetailsEvent.value = Event(factItemModel)
     }
     private fun showSnackbarMessage(message: String) {
         _snackbarText.postValue(Event(message))
