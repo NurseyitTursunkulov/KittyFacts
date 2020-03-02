@@ -1,5 +1,6 @@
-package com.example.data
+package com.example.data.remote
 
+import com.example.data.FactListModel
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET

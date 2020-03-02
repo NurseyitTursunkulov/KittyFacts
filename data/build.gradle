@@ -64,4 +64,9 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
 
+    def paging_version = "2.1.1"
+
+    implementation "androidx.paging:paging-runtime:$paging_version" // For Kotlin use paging-runtime-ktx
+
+
 }

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class FactItemModel(
-    @PrimaryKey(autoGenerate = true) var factNumber: Int,
+    @PrimaryKey var factNumber: Int,
     @SerializedName("fact")
     var factDescription: String = ""
 )
