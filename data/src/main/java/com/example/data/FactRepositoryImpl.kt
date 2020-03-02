@@ -1,17 +1,20 @@
 package com.example.data
 
-import android.util.Log
-import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.data.local.FactsDao
 import com.example.data.remote.FactServiceApi
 
 class FactRepositoryImpl(val factServiceApi: FactServiceApi, val factsDao: FactsDao) : FactsRepository {
     override suspend fun getFacts(): Result<List<FactItemModel>> {
         try {
-            val call = factsDao.getFacts()
-            if (call.isNotEmpty()) {
+            val facts = factsDao.getFacts()
+            if (facts.isNotEmpty()) {
                 return Result.Success(factsDao.getFacts())
             } else {
+                refreshFactsRepository()
+                val getFactsAfterRefresh = factsDao.getFacts()
+                if (getFactsAfterRefresh.isNotEmpty()) {
+                    return Result.Success(factsDao.getFacts())
+                }
                 return Result.Error(Exception("no connection"))
             }
         } catch (e: Exception) {

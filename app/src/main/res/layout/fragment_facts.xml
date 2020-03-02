@@ -50,6 +50,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/error_message_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/connection_error"
+            android:visibility="@{viewmodel.isDataLoadingError ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/news_list"
+            app:layout_constraintEnd_toStartOf="@+id/news_list"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/news_list"
+            app:layout_constraintTop_toBottomOf="@+id/news_list"
+            app:layout_constraintVertical_bias="0.72" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

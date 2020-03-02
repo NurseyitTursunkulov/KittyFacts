@@ -42,6 +42,7 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
                     _isDataLoadingError.postValue(false)
                     _items.postValue(factsResult.data)
                 } else {
+                    refreshData()
                     _isDataLoadingError.postValue( true)
                     _items.postValue(emptyList())
                     showSnackbarMessage(factsResult.toString())
@@ -61,7 +62,7 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
     }
 
      fun refreshData(){
-         _dataLoading.value = true
+         _dataLoading.postValue( true)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                var result =  getFactsUseCase.refreshFactsRepository()
