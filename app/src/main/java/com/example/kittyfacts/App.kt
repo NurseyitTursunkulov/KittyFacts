@@ -2,13 +2,16 @@ package com.example.kittyfacts
 
 import android.app.Application
 import com.example.data.FactRepositoryImpl
-import com.example.data.FactServiceApi
+import com.example.data.remote.FactServiceApi
 import com.example.data.FactsRepository
+import com.example.data.local.FactsDao
+import com.example.data.local.FactsDataBase
 import com.example.domain.GetFactsUseCase
 import com.example.domain.GetFactsUseCaseImpl
 import com.example.kittyfacts.factList.FactsViewModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.android.viewmodel.dsl.viewModel
@@ -51,13 +54,14 @@ class App : Application() {
 
         factory<FactsRepository> {
             FactRepositoryImpl(
-                factServiceApi = get()
+                factServiceApi = get(),
+                factsDao = get()
             )
         }
 
-        single<GetFactsUseCase>{GetFactsUseCaseImpl(factRepository = get())}
+        single<GetFactsUseCaseImpl>{GetFactsUseCaseImpl(factRepository = get())}
         viewModel { FactsViewModel(getFactsUseCase = get()) }
 
-//        single<NewsDao> { NewsDataBase.getInstance(androidApplication()).newsDao() }
+        single<FactsDao> { FactsDataBase.getInstance(androidApplication()).factsDao() }
     }
 }

@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.FactItemModel
 import com.example.data.Result
 import com.example.domain.GetFactsUseCase
-import com.example.kittyfacts.R
+import com.example.domain.GetFactsUseCaseImpl
 import com.example.kittyfacts.util.Event
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class FactsViewModel(val getFactsUseCase: GetFactsUseCase) : ViewModel() {
+class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -19,31 +21,36 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCase) : ViewModel() {
     private val _isDataLoadingError = MutableLiveData<Boolean>()
     val isDataLoadingError: LiveData<Boolean> = _isDataLoadingError
 
-    private val _snackbarText = MutableLiveData<Event<Int>>()
-    val snackbarText: LiveData<Event<Int>> = _snackbarText
+    private val _snackbarText = MutableLiveData<Event<String>>()
+    val snackbarText: LiveData<Event<String>> = _snackbarText
 
     private val _items = MutableLiveData<List<FactItemModel>>().apply { value = emptyList() }
     val items: LiveData<List<FactItemModel>> = _items
 
-    fun loadTasks() {
+    fun loadFacts() {
         _dataLoading.value = true
         viewModelScope.launch {
-            val factsResult = getFactsUseCase()
-            if (factsResult is Result.Success) {
-                _isDataLoadingError.value = false
-                _items.value = factsResult.data
-            } else {
-                _isDataLoadingError.value = true
-                _items.value = emptyList()
-                showSnackbarMessage(R.string.loading_facts_error)
-            }
+            withContext(Dispatchers.IO) {
+                val factsResult = getFactsUseCase()
+                if (factsResult is Result.Success) {
+                    _isDataLoadingError.postValue(false)
+                    _items.postValue(factsResult.data)
+                } else {
+                    _isDataLoadingError.postValue( true)
+                    _items.postValue(emptyList())
+                    showSnackbarMessage(factsResult.toString())
+                }
 
-            _dataLoading.value = false
+                _dataLoading.postValue(false)
+            }
         }
 
     }
 
-    private fun showSnackbarMessage(message: Int) {
-        _snackbarText.value = Event(message)
+    fun openDetails(factItemModel: FactItemModel){
+
+    }
+    private fun showSnackbarMessage(message: String) {
+        _snackbarText.postValue(Event(message))
     }
 }
