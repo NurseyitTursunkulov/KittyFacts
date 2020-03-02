@@ -19,8 +19,12 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+//            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            jniDebuggable true
         }
     }
     compileOptions {
@@ -47,6 +51,7 @@ dependencies {
     testImplementation 'androidx.test:core:1.2.0'
 
     implementation project(":domain")
+    implementation project(":data")
     def moshiVersion = "1.9.2"
     def retrofit2_version = "2.7.1"
     def okhttp3_version = "3.12.0"
