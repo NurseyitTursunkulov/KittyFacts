@@ -46,6 +46,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'androidx.test:core:1.2.0'
 
+    implementation project(":domain")
     def moshiVersion = "1.9.2"
     def retrofit2_version = "2.7.1"
     def okhttp3_version = "3.12.0"
