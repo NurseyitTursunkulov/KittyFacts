@@ -8,4 +8,8 @@ class GetFactsUseCaseImpl(val factRepository: FactsRepository):GetFactsUseCase {
     override suspend fun invoke(): Result<List<FactItemModel>> {
         return factRepository.getFacts()
     }
+
+    override suspend fun refreshFactsRepository(): Result<String> {
+        return factRepository.refreshFactsRepository()
+    }
 }

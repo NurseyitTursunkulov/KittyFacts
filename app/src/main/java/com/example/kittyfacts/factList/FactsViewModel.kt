@@ -59,4 +59,26 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
     private fun showSnackbarMessage(message: String) {
         _snackbarText.postValue(Event(message))
     }
+
+     fun refreshData(){
+         _dataLoading.value = true
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+               var result =  getFactsUseCase.refreshFactsRepository()
+                if (result is Result.Success) {
+                    _isDataLoadingError.postValue(false)
+                    withContext(Dispatchers.Main) {
+                        loadFacts()
+                    }
+                } else {
+                    _isDataLoadingError.postValue( true)
+                    _items.postValue(emptyList())
+                    showSnackbarMessage(result.toString())
+                }
+
+                _dataLoading.postValue(false)
+            }
+        }
+
+    }
 }
