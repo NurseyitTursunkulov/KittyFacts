@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.FactItemModel
 import com.example.data.Result
-import com.example.domain.GetFactsUseCase
 import com.example.domain.GetFactsUseCaseImpl
 import com.example.kittyfacts.util.Event
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -24,8 +24,12 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
     private val _snackbarText = MutableLiveData<Event<String>>()
     val snackbarText: LiveData<Event<String>> = _snackbarText
 
-    private val _items = MutableLiveData<List<FactItemModel>>().apply { value = emptyList() }
-    val items: LiveData<List<FactItemModel>> = _items
+    private val _items =
+        MutableLiveData<MutableList<FactItemModel>>().apply { value = mutableListOf() }
+    val items: LiveData<MutableList<FactItemModel>> = _items
+
+    private val _totalItemsSize = MutableLiveData<Int>()
+    val totalItemsSize: LiveData<Int> = _totalItemsSize
 
     private val _openDetailsEvent = MutableLiveData<Event<FactItemModel>>()
     val openDetailsEvent: LiveData<Event<FactItemModel>> = _openDetailsEvent
@@ -33,18 +37,21 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
     init {
         loadFacts()
     }
+
     fun loadFacts() {
         _dataLoading.value = true
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                delay(500)
                 val factsResult = getFactsUseCase()
                 if (factsResult is Result.Success) {
                     _isDataLoadingError.postValue(false)
-                    _items.postValue(factsResult.data)
+                    _items.postListValue(factsResult.data)
+                    loadFactsItemsSize()
                 } else {
                     refreshData()
-                    _isDataLoadingError.postValue( true)
-                    _items.postValue(emptyList())
+                    _isDataLoadingError.postValue(true)
+                    _items.postValue(mutableListOf())
                     showSnackbarMessage(factsResult.toString())
                 }
 
@@ -54,26 +61,27 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
 
     }
 
-    fun openDetails(factItemModel: FactItemModel){
+    fun openDetails(factItemModel: FactItemModel) {
         _openDetailsEvent.value = Event(factItemModel)
     }
+
     private fun showSnackbarMessage(message: String) {
         _snackbarText.postValue(Event(message))
     }
 
-     fun refreshData(){
-         _dataLoading.postValue( true)
+    fun refreshData() {
+        _dataLoading.postValue(true)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-               var result =  getFactsUseCase.refreshFactsRepository()
+                var result = getFactsUseCase.refreshFactsRepository()
                 if (result is Result.Success) {
                     _isDataLoadingError.postValue(false)
                     withContext(Dispatchers.Main) {
                         loadFacts()
                     }
                 } else {
-                    _isDataLoadingError.postValue( true)
-                    _items.postValue(emptyList())
+                    _isDataLoadingError.postValue(true)
+                    _items.postValue(mutableListOf())
                     showSnackbarMessage(result.toString())
                 }
 
@@ -81,5 +89,18 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
             }
         }
 
+    }
+
+    fun loadFactsItemsSize() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _totalItemsSize.postValue(getFactsUseCase.getFactsItemsSize())
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        getFactsUseCase.page = 0 //starting page
     }
 }

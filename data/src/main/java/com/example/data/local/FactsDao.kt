@@ -9,11 +9,9 @@ import com.example.data.FactItemModel
 
 @Dao
 interface FactsDao {
-//TODO add pagination
-//    @Query("SELECT * FROM FactItemModel where factNumber between :page and :page+50")
 
-    @Query("SELECT * FROM FactItemModel ")
-    fun getFacts(): List<FactItemModel>
+    @Query("SELECT * FROM FactItemModel  where factNumber between :page and :page+9 ")
+    fun getFacts(page:Int): List<FactItemModel>
 
     @Query("SELECT MAX(factNumber) from FactItemModel")
     fun getSize(): Int

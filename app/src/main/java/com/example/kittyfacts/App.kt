@@ -4,6 +4,8 @@ import android.app.Application
 import com.example.data.FactRepositoryImpl
 import com.example.data.remote.FactServiceApi
 import com.example.data.FactsRepository
+import com.example.data.FactsRepositoryUtil
+import com.example.data.FactsRepositoryUtilImpl
 import com.example.data.local.FactsDao
 import com.example.data.local.FactsDataBase
 import com.example.domain.GetFactsUseCase
@@ -52,10 +54,13 @@ class App : Application() {
 
         factory { get<Retrofit>().create(FactServiceApi::class.java) }
 
-        factory<FactsRepository> {
+        single<FactsRepositoryUtil>{FactsRepositoryUtilImpl(factsDao = get())}
+
+        single<FactsRepository> {
             FactRepositoryImpl(
                 factServiceApi = get(),
-                factsDao = get()
+                factsDao = get(),
+                factsRepositoryUtil = get()
             )
         }
 

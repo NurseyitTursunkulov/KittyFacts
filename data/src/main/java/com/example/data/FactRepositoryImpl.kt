@@ -3,26 +3,36 @@ package com.example.data
 import com.example.data.local.FactsDao
 import com.example.data.remote.FactServiceApi
 
-class FactRepositoryImpl(val factServiceApi: FactServiceApi, val factsDao: FactsDao) : FactsRepository {
-    override suspend fun getFacts(): Result<List<FactItemModel>> {
+class FactRepositoryImpl(
+    val factServiceApi: FactServiceApi,
+    val factsDao: FactsDao,
+    override val factsRepositoryUtil: FactsRepositoryUtil
+) : FactsRepository {
+
+    override suspend fun getFacts(page: Int): Result<List<FactItemModel>> {
         try {
-            val facts = factsDao.getFacts()
+            val facts = factsDao.getFacts(page)
             if (facts.isNotEmpty()) {
-                return Result.Success(factsDao.getFacts())
-            } else {
+                return Result.Success(facts)
+            }
+            else if (page == factsRepositoryUtil.START_PAGE) {
                 refreshFactsRepository()
-                val getFactsAfterRefresh = factsDao.getFacts()
+                val getFactsAfterRefresh = factsDao.getFacts(page)
                 if (getFactsAfterRefresh.isNotEmpty()) {
-                    return Result.Success(factsDao.getFacts())
+                    return Result.Success(getFactsAfterRefresh)
                 }
                 return Result.Error(Exception("no connection"))
             }
+            else{
+                return Result.Success(emptyList())
+            }
+
         } catch (e: Exception) {
             return Result.Error(e)
         }
     }
 
-    override suspend fun refreshFactsRepository() : Result<String>{
+    override suspend fun refreshFactsRepository(): Result<String> {
         factsDao.delete()
         try {
             val call = factServiceApi.getFacts().await()
@@ -42,9 +52,5 @@ class FactRepositoryImpl(val factServiceApi: FactServiceApi, val factsDao: Facts
         } catch (e: Exception) {
             return Result.Error(e)
         }
-    }
-
-    override suspend fun getFactsSize(): Int {
-        return factsDao.getSize()
     }
 }

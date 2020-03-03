@@ -45,7 +45,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="@{`Hello ` + Integer.toString(fact_item.factNumber)}"
+            android:text="@{`Fact ` + Integer.toString(fact_item.factNumber)}"
             app:layout_constraintBottom_toTopOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
