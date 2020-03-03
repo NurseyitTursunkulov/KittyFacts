@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FactsFragment"
-        android:name="com.example.kittyfacts.FactsFragment"
+        android:name="com.example.kittyfacts.factList.FactsFragment"
         android:label="@string/facts_fragment_label"
         tools:layout="@layout/fragment_facts">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/DetailFragment"
-        android:name="com.example.kittyfacts.DetailFragment"
+        android:name="com.example.kittyfacts.factDetails.DetailFragment"
         android:label="@string/detail_fragment_label"
         tools:layout="@layout/fragment_details">
 

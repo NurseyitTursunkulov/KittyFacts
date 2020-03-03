@@ -1,17 +1,13 @@
-package com.example.kittyfacts
+package com.example.kittyfacts.factList
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.kittyfacts.R
 import com.example.kittyfacts.databinding.FragmentFactsBinding
-import com.example.kittyfacts.factList.FactsAdapter
-import com.example.kittyfacts.factList.FactsViewModel
-import com.example.kittyfacts.factList.setupListAdapter
 import com.example.kittyfacts.util.EventObserver
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 

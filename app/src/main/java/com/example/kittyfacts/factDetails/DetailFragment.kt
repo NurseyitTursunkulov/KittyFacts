@@ -1,4 +1,4 @@
-package com.example.kittyfacts
+package com.example.kittyfacts.factDetails
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.example.kittyfacts.R
 import com.example.kittyfacts.factList.FactsViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel

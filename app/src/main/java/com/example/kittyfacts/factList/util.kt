@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kittyfacts.FactsFragment
 
 fun FactsFragment.setupListAdapter() {
     val viewModel = viewDataBinding.viewmodel
