@@ -10,7 +10,7 @@ class GetFactsUseCaseImpl(val factRepository: FactsRepository) : GetFactsUseCase
 
     override suspend fun invoke(): Result<List<FactItemModel>> {
         return factRepository.getFacts((page)).also {result->
-            if (result is Result.Success) page += 10
+            if (result is Result.Success) page += 1
         }
     }
 

@@ -9,7 +9,6 @@ import com.example.data.Result
 import com.example.domain.GetFactsUseCaseImpl
 import com.example.kittyfacts.util.Event
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -34,6 +33,8 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
     private val _openDetailsEvent = MutableLiveData<Event<FactItemModel>>()
     val openDetailsEvent: LiveData<Event<FactItemModel>> = _openDetailsEvent
 
+    private val STARTING_PAGE = 1
+
     init {
         loadFacts()
     }
@@ -42,16 +43,14 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
         _dataLoading.value = true
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                delay(500)
                 val factsResult = getFactsUseCase()
                 if (factsResult is Result.Success) {
                     _isDataLoadingError.postValue(false)
                     _items.postListValue(factsResult.data)
                     loadFactsItemsSize()
                 } else {
-                    refreshData()
                     _isDataLoadingError.postValue(true)
-                    _items.postValue(mutableListOf())
+                    _items.postListValue(mutableListOf())
                     showSnackbarMessage(factsResult.toString())
                 }
 
@@ -76,6 +75,8 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
                 var result = getFactsUseCase.refreshFactsRepository()
                 if (result is Result.Success) {
                     _isDataLoadingError.postValue(false)
+                    getFactsUseCase.page = STARTING_PAGE
+                    _items.postValue(mutableListOf())
                     withContext(Dispatchers.Main) {
                         loadFacts()
                     }
@@ -101,6 +102,6 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        getFactsUseCase.page = 0 //starting page
+        getFactsUseCase.page = STARTING_PAGE
     }
 }

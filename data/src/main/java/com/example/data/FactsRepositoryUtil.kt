@@ -2,7 +2,7 @@ package com.example.data
 
 interface FactsRepositoryUtil {
     val START_PAGE: Int
-        get() = 0
+        get() = 1
 
     suspend fun getFactsSize():Int
 }

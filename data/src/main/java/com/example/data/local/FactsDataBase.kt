@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.data.FactItemModel
+import com.example.data.TotalFactsSize
 
-@Database(entities = [FactItemModel::class], version = 5, exportSchema = false)
+@Database(entities = [FactItemModel::class, TotalFactsSize::class], version = 6, exportSchema = false)
 abstract class FactsDataBase: RoomDatabase() {
     abstract fun factsDao(): FactsDao
 

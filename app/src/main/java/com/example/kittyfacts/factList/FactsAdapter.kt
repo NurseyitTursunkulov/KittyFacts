@@ -17,7 +17,7 @@ class FactsAdapter(
 
         holder.bind(viewModel, item)
 
-        if (isuserReachedTheBottom(position) && repositoryHasMoreItems()) {
+        if (isUserReachedTheBottom(position) && repositoryHasMoreItems()) {
             viewModel.loadFacts()
         }
     }
@@ -25,14 +25,15 @@ class FactsAdapter(
     private fun repositoryHasMoreItems(): Boolean {
         viewModel.totalItemsSize.value?.let { totalItemSize ->
             viewModel.items.value?.size?.let { currentItemSize ->
-                return totalItemSize > currentItemSize
+                return totalItemSize > currentItemSize+1
             }
         }
         return false
     }
 
-    private fun isuserReachedTheBottom(position: Int) : Boolean
-            = position + 1 == viewModel.items.value?.size
+    private fun isUserReachedTheBottom(position: Int) : Boolean {
+        return position + 1 == viewModel.items.value?.size
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)

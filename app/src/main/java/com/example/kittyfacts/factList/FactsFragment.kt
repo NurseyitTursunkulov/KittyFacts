@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.kittyfacts.R
 import com.example.kittyfacts.databinding.FragmentFactsBinding
 import com.example.kittyfacts.util.EventObserver
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class FactsFragment : Fragment() {
@@ -33,6 +34,8 @@ class FactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListAdapter()
+        view.setupSnackbar(viewLifecycleOwner, factsViewModel.snackbarText, Snackbar.LENGTH_SHORT)
+
         factsViewModel.openDetailsEvent.observe(viewLifecycleOwner, EventObserver{
             findNavController().navigate(R.id.action_FactsFragment_to_DetailFragment)
         })

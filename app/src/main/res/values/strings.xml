@@ -11,5 +11,5 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="loading_facts_error">Error while loading cat facts</string>
-    <string name="connection_error">connection error</string>
+    <string name="no_internet_connection">no internet connection</string>
 </resources>

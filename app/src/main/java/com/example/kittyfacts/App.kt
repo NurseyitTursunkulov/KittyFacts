@@ -2,13 +2,12 @@ package com.example.kittyfacts
 
 import android.app.Application
 import com.example.data.FactRepositoryImpl
-import com.example.data.remote.FactServiceApi
 import com.example.data.FactsRepository
 import com.example.data.FactsRepositoryUtil
 import com.example.data.FactsRepositoryUtilImpl
 import com.example.data.local.FactsDao
 import com.example.data.local.FactsDataBase
-import com.example.domain.GetFactsUseCase
+import com.example.data.remote.FactServiceApi
 import com.example.domain.GetFactsUseCaseImpl
 import com.example.kittyfacts.factList.FactsViewModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -54,7 +53,12 @@ class App : Application() {
 
         factory { get<Retrofit>().create(FactServiceApi::class.java) }
 
-        single<FactsRepositoryUtil>{FactsRepositoryUtilImpl(factsDao = get())}
+        single<FactsRepositoryUtil> {
+            FactsRepositoryUtilImpl(
+                factServiceApi = get(),
+                factsDao = get()
+            )
+        }
 
         single<FactsRepository> {
             FactRepositoryImpl(
@@ -64,7 +68,7 @@ class App : Application() {
             )
         }
 
-        single<GetFactsUseCaseImpl>{GetFactsUseCaseImpl(factRepository = get())}
+        single<GetFactsUseCaseImpl> { GetFactsUseCaseImpl(factRepository = get()) }
         viewModel { FactsViewModel(getFactsUseCase = get()) }
 
         single<FactsDao> { FactsDataBase.getInstance(androidApplication()).factsDao() }
