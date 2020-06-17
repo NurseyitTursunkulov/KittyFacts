@@ -28,7 +28,7 @@ fun <T>assertLiveDataEventTriggered(
     assertEquals(value.getContentIfNotHandled(), newsModel)
 }
 
-fun assertSnackbarMessage(snackbarLiveData: LiveData<Event<Int>>, messageId: Int) {
-    val value: Event<Int> = LiveDataTestUtil.getValue(snackbarLiveData)
+fun assertSnackbarMessage(snackbarLiveData: LiveData<Event<String>>, messageId: String) {
+    val value: Event<String> = LiveDataTestUtil.getValue(snackbarLiveData)
     assertEquals(value.getContentIfNotHandled(), messageId)
 }

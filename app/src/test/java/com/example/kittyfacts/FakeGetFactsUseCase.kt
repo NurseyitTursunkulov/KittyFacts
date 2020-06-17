@@ -7,10 +7,11 @@ import com.example.domain.GetFactsUseCase
 
 class FakeGetFactsUseCase : GetFactsUseCase {
     val factItemList: LinkedHashMap<Int, FactItemModel> = LinkedHashMap()
+    var result:Result<List<FactItemModel>> = Result.Success(factItemList.values.toList())
     private val startPage = 1
 
     override suspend fun invoke(): Result<List<FactItemModel>> {
-        return Result.Success(factItemList.values.toList())
+        return result
     }
 
     override suspend fun refreshFactsRepository(): Result<String> {
