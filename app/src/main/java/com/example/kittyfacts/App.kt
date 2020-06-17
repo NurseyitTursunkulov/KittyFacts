@@ -8,6 +8,7 @@ import com.example.data.FactsRepositoryUtilImpl
 import com.example.data.local.FactsDao
 import com.example.data.local.FactsDataBase
 import com.example.data.remote.FactServiceApi
+import com.example.domain.GetFactsUseCase
 import com.example.domain.GetFactsUseCaseImpl
 import com.example.kittyfacts.factList.FactsViewModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -68,7 +69,7 @@ class App : Application() {
             )
         }
 
-        single<GetFactsUseCaseImpl> { GetFactsUseCaseImpl(factRepository = get()) }
+        single<GetFactsUseCase> { GetFactsUseCaseImpl(factRepository = get()) }
         viewModel { FactsViewModel(getFactsUseCase = get()) }
 
         single<FactsDao> { FactsDataBase.getInstance(androidApplication()).factsDao() }

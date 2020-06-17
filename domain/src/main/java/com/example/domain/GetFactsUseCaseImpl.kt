@@ -3,14 +3,23 @@ package com.example.domain
 import com.example.data.FactItemModel
 import com.example.data.FactsRepository
 import com.example.data.Result
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class GetFactsUseCaseImpl(val factRepository: FactsRepository) : GetFactsUseCase {
+class GetFactsUseCaseImpl(
+    val factRepository: FactsRepository,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : GetFactsUseCase {
 
-    var page = factRepository.factsRepositoryUtil.START_PAGE
+    override var page = factRepository.factsRepositoryUtil.START_PAGE
 
     override suspend fun invoke(): Result<List<FactItemModel>> {
-        return factRepository.getFacts((page)).also {result->
-            if (result is Result.Success) page += 1
+
+        return withContext(ioDispatcher) {
+            factRepository.getFacts((page)).also { result ->
+                if (result is Result.Success) page += 1
+            }
         }
     }
 
@@ -18,7 +27,7 @@ class GetFactsUseCaseImpl(val factRepository: FactsRepository) : GetFactsUseCase
         return factRepository.refreshFactsRepository()
     }
 
-    suspend fun getFactsItemsSize():Int{
+    override suspend fun getFactsItemsSize(): Int {
         return factRepository.factsRepositoryUtil.getFactsSize()
     }
 }

@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.FactItemModel
 import com.example.data.Result
+import com.example.domain.GetFactsUseCase
 import com.example.domain.GetFactsUseCaseImpl
 import com.example.kittyfacts.util.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
+class FactsViewModel(val getFactsUseCase: GetFactsUseCase) : ViewModel() {
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -42,20 +43,19 @@ class FactsViewModel(val getFactsUseCase: GetFactsUseCaseImpl) : ViewModel() {
     fun loadFacts() {
         _dataLoading.value = true
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val factsResult = getFactsUseCase()
-                if (factsResult is Result.Success) {
-                    _isDataLoadingError.postValue(false)
-                    _items.postListValue(factsResult.data)
-                    loadFactsItemsSize()
-                } else {
-                    _isDataLoadingError.postValue(true)
-                    _items.postListValue(mutableListOf())
-                    showSnackbarMessage(factsResult.toString())
-                }
-
-                _dataLoading.postValue(false)
+            val factsResult = getFactsUseCase()
+            if (factsResult is Result.Success) {
+                _isDataLoadingError.postValue(false)
+                _items.postListValue(factsResult.data)
+                loadFactsItemsSize()
+            } else {
+                _isDataLoadingError.postValue(true)
+                _items.postListValue(mutableListOf())
+                showSnackbarMessage(factsResult.toString())
             }
+
+            _dataLoading.postValue(false)
+
         }
 
     }
