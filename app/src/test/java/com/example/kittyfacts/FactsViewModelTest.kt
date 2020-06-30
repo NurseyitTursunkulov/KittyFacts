@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.data.FactItemModel
 import com.example.data.Result
 import com.example.domain.GetFactsUseCase
-import com.example.kittyfacts.factList.FactsViewModel
 import com.example.testrussia.LiveDataTestUtil
 import com.example.testrussia.MainCoroutineRule
 import com.example.testrussia.assertLiveDataEventTriggered
@@ -24,7 +23,7 @@ import java.lang.Exception
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @ExperimentalCoroutinesApi
-class ExampleUnitTest {
+class FactsViewModelTest {
     private lateinit var factsViewModel: FactsViewModel
     private lateinit var fakeUseCase: GetFactsUseCase
 

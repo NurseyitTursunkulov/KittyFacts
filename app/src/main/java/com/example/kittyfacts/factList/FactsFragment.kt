@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.example.kittyfacts.FactsViewModel
 import com.example.kittyfacts.R
 import com.example.kittyfacts.databinding.FragmentFactsBinding
 import com.example.kittyfacts.util.EventObserver

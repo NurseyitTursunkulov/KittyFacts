@@ -10,7 +10,6 @@ import com.example.data.local.FactsDataBase
 import com.example.data.remote.FactServiceApi
 import com.example.domain.GetFactsUseCase
 import com.example.domain.GetFactsUseCaseImpl
-import com.example.kittyfacts.factList.FactsViewModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication

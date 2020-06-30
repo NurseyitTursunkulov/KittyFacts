@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.kittyfacts.R
-import com.example.kittyfacts.factList.FactsViewModel
+import com.example.kittyfacts.FactsViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 

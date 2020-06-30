@@ -1,4 +1,4 @@
-package com.example.kittyfacts.factList
+package com.example.kittyfacts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.FactItemModel
 import com.example.data.Result
 import com.example.domain.GetFactsUseCase
-import com.example.domain.GetFactsUseCaseImpl
+import com.example.kittyfacts.factList.postListValue
 import com.example.kittyfacts.util.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

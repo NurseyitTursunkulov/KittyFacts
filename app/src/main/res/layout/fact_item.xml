@@ -13,7 +13,7 @@
 
         <variable
             name="viewmodel"
-            type="com.example.kittyfacts.factList.FactsViewModel" />
+            type="com.example.kittyfacts.FactsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
